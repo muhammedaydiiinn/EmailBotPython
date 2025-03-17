@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-cog"></i> SMTP ve E-posta Ayarları
+                </h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('settings') }}" method="post" enctype="multipart/form-data">
+                    <!-- SMTP Ayarları -->
+                    <h6 class="mb-3">SMTP Ayarları</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="smtp_server" class="form-label">SMTP Sunucusu</label>
+                            <input type="text" class="form-control" id="smtp_server" name="smtp_server"
+                                   value="{{ settings.smtp_server }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="smtp_port" class="form-label">SMTP Port</label>
+                            <input type="number" class="form-control" id="smtp_port" name="smtp_port"
+                                   value="{{ settings.smtp_port }}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="smtp_username" class="form-label">SMTP Kullanıcı Adı</label>
+                            <input type="email" class="form-control" id="smtp_username" name="smtp_username"
+                                   value="{{ settings.smtp_username }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="smtp_password" class="form-label">SMTP Şifresi</label>
+                            <input type="password" class="form-control" id="smtp_password" name="smtp_password"
+                                   value="{{ settings.smtp_password }}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="sender_email" class="form-label">Gönderen E-posta Adresi</label>
+                            <input type="email" class="form-control" id="sender_email" name="sender_email"
+                                   value="{{ settings.sender_email }}" required>
+                            <div class="form-text">E-postaların gönderileceği adres</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="sender_name" class="form-label">Gönderen Adı</label>
+                            <input type="text" class="form-control" id="sender_name" name="sender_name"
+                                   value="{{ settings.sender_name }}" required>
+                            <div class="form-text">E-postalarda görünecek gönderen adı (örn: İK Ekibi)</div>
+                        </div>
+                    </div>
+
+                    <!-- E-posta Ayarları -->
+                    <h6 class="mb-3 mt-4">E-posta Ayarları</h6>
+                    <div class="mb-3">
+                        <label for="email_subject" class="form-label">E-posta Konusu</label>
+                        <input type="text" class="form-control" id="email_subject" name="email_subject"
+                               value="{{ settings.email_subject }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email_body" class="form-label">E-posta İçeriği</label>
+                        <textarea class="form-control" id="email_body" name="email_body" rows="5" required>{{ settings.email_body }}</textarea>
+                    </div>
+
+                    <!-- Dosya Yükleme -->
+                    <h6 class="mb-3 mt-4">Ek Dosya Ayarları</h6>
+                    <div class="mb-3">
+                        <label for="word_file" class="form-label">Word Dosyası</label>
+                        <input type="file" class="form-control" id="word_file" name="word_file" accept=".docx">
+                        <div class="form-text">
+                            Yeni bir dosya yüklemek için seçin. Mevcut dosya: {{ settings.attachment_path or 'Yok' }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Ayarları Kaydet
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
