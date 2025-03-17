@@ -23,7 +23,10 @@ email_service = EmailService()
 def init_app():
     """Uygulamayı başlatır ve veritabanını oluşturur."""
     with app.app_context():
+        # Veritabanını oluştur
         db.create_all()
+        
+        # E-posta servisini başlat
         email_service.init_app(app)
 
 @app.route('/')
@@ -39,6 +42,10 @@ def settings():
     """SMTP ve e-posta ayarları"""
     if request.method == 'POST':
         try:
+            # Mevcut ayarları al
+            current_settings = Settings.query.first()
+            current_attachment = current_settings.attachment_path if current_settings else None
+
             # Word dosyası yükleme
             attachment_path = None
             if 'word_file' in request.files:
@@ -49,19 +56,36 @@ def settings():
                     file.save(filepath)
                     attachment_path = filepath
 
+            # SMTP şifresini kontrol et
+            smtp_password = request.form.get('smtp_password', '').strip()
+            
+            # Eğer yeni ayar oluşturuluyorsa şifre zorunlu
+            if not current_settings and not smtp_password:
+                flash('İlk kurulum için SMTP şifresi gerekli.', 'error')
+                return redirect(url_for('settings'))
+                
+            # Eğer mevcut ayarlar varsa ve şifre girilmemişse, mevcut şifreyi kullan
+            if not smtp_password and current_settings:
+                smtp_password = current_settings.smtp_password
+                if not smtp_password:
+                    flash('SMTP şifresi gerekli.', 'error')
+                    return redirect(url_for('settings'))
+
             # Ayarları güncelle
             email_service.update_settings(
-                smtp_server=request.form['smtp_server'],
+                smtp_server=request.form['smtp_server'].strip(),
                 smtp_port=int(request.form['smtp_port']),
-                smtp_username=request.form['smtp_username'],
-                smtp_password=request.form['smtp_password'],
-                sender_email=request.form['sender_email'],
-                sender_name=request.form['sender_name'],
-                email_subject=request.form['email_subject'],
-                email_body=request.form['email_body'],
-                attachment_path=attachment_path or request.form.get('attachment_path')
+                smtp_username=request.form['smtp_username'].strip(),
+                smtp_password=smtp_password,
+                sender_email=request.form['sender_email'].strip(),
+                sender_name=request.form['sender_name'].strip(),
+                email_subject=request.form['email_subject'].strip(),
+                email_body=request.form['email_body'].strip(),
+                attachment_path=attachment_path or current_attachment
             )
             flash('Ayarlar başarıyla güncellendi.', 'success')
+        except ValueError as e:
+            flash(f'Geçersiz değer: {str(e)}', 'error')
         except Exception as e:
             flash(f'Ayarlar güncellenirken hata oluştu: {str(e)}', 'error')
         return redirect(url_for('settings'))
@@ -136,4 +160,4 @@ def send_emails():
 
 if __name__ == '__main__':
     init_app()
-    app.run(debug=True) 
+    app.run(debug=True, port=3000)

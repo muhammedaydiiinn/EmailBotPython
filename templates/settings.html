@@ -17,31 +17,33 @@
                         <div class="col-md-6 mb-3">
                             <label for="smtp_server" class="form-label">SMTP Sunucusu</label>
                             <input type="text" class="form-control" id="smtp_server" name="smtp_server"
-                                   value="{{ settings.smtp_server }}" required>
+                                   value="{{ settings.smtp_server if settings else 'smtp.gmail.com' }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="smtp_port" class="form-label">SMTP Port</label>
                             <input type="number" class="form-control" id="smtp_port" name="smtp_port"
-                                   value="{{ settings.smtp_port }}" required>
+                                   value="{{ settings.smtp_port if settings else 587 }}" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="smtp_username" class="form-label">SMTP Kullanıcı Adı</label>
                             <input type="email" class="form-control" id="smtp_username" name="smtp_username"
-                                   value="{{ settings.smtp_username }}" required>
+                                   value="{{ settings.smtp_username if settings else '' }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="smtp_password" class="form-label">SMTP Şifresi</label>
                             <input type="password" class="form-control" id="smtp_password" name="smtp_password"
-                                   value="{{ settings.smtp_password }}" required>
+                                   placeholder="{% if settings and settings._smtp_password %}Şifre kayıtlı{% else %}SMTP şifrenizi girin{% endif %}" 
+                                   {% if not settings or not settings._smtp_password %}required{% endif %}>
+                            <div class="form-text">{% if settings and settings._smtp_password %}Değiştirmek istemiyorsanız boş bırakın{% else %}SMTP şifrenizi girin{% endif %}</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="sender_email" class="form-label">Gönderen E-posta Adresi</label>
                             <input type="email" class="form-control" id="sender_email" name="sender_email"
-                                   value="{{ settings.sender_email }}" required>
+                                   value="{{ settings.sender_email if settings else '' }}" required>
                             <div class="form-text">E-postaların gönderileceği adres</div>
                         </div>
                     </div>
@@ -49,7 +51,7 @@
                         <div class="col-md-12 mb-3">
                             <label for="sender_name" class="form-label">Gönderen Adı</label>
                             <input type="text" class="form-control" id="sender_name" name="sender_name"
-                                   value="{{ settings.sender_name }}" required>
+                                   value="{{ settings.sender_name if settings else '' }}" required>
                             <div class="form-text">E-postalarda görünecek gönderen adı (örn: İK Ekibi)</div>
                         </div>
                     </div>
@@ -59,11 +61,11 @@
                     <div class="mb-3">
                         <label for="email_subject" class="form-label">E-posta Konusu</label>
                         <input type="text" class="form-control" id="email_subject" name="email_subject"
-                               value="{{ settings.email_subject }}" required>
+                               value="{{ settings.email_subject if settings else '' }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="email_body" class="form-label">E-posta İçeriği</label>
-                        <textarea class="form-control" id="email_body" name="email_body" rows="5" required>{{ settings.email_body }}</textarea>
+                        <textarea class="form-control" id="email_body" name="email_body" rows="5" required>{{ settings.email_body if settings else '' }}</textarea>
                     </div>
 
                     <!-- Dosya Yükleme -->
@@ -71,9 +73,14 @@
                     <div class="mb-3">
                         <label for="word_file" class="form-label">Word Dosyası</label>
                         <input type="file" class="form-control" id="word_file" name="word_file" accept=".docx">
+                        {% if settings and settings.attachment_path %}
                         <div class="form-text">
-                            Yeni bir dosya yüklemek için seçin. Mevcut dosya: {{ settings.attachment_path or 'Yok' }}
+                            Mevcut dosya: {{ settings.attachment_path }}
+                            <input type="hidden" name="current_attachment" value="{{ settings.attachment_path }}">
                         </div>
+                        {% else %}
+                        <div class="form-text">Henüz dosya yüklenmemiş</div>
+                        {% endif %}
                     </div>
 
                     <button type="submit" class="btn btn-primary">
