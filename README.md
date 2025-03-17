@@ -1,66 +1,111 @@
 # Toplu E-posta Gönderim Sistemi
 
-Bu Python projesi, CSV formatındaki e-posta listesinden alıcıları okuyarak kişiselleştirilmiş e-postalar göndermenizi sağlar.
+Bu Flask tabanlı web uygulaması, toplu e-posta gönderimi için geliştirilmiş profesyonel bir sistemdir. CSV dosyasından alıcı listesini okuyarak, kişiselleştirilmiş e-postalar göndermenizi sağlar.
 
-## Özellikler
+## 🚀 Özellikler
 
-- CSV dosyasından alıcı listesi okuma
-- Kişiselleştirilmiş e-posta içeriği
-- Word dosyası ekleme desteği
-- Gmail veya Outlook SMTP desteği
-- Detaylı loglama sistemi
-- Spam koruması için gönderim gecikmesi
-- Hata yönetimi ve raporlama
+- 📊 CSV dosyasından alıcı listesi okuma
+- ✉️ Kişiselleştirilmiş e-posta içeriği oluşturma
+- 📎 Dosya ekleme desteği (Word, PDF vb.)
+- 🔒 Gmail veya Outlook SMTP desteği
+- 📝 Detaylı loglama ve gönderim geçmişi
+- ⏱️ Spam koruması için akıllı gönderim gecikmesi
+- 💾 SQLite veritabanı ile veri saklama
+- 🌐 Web arayüzü ile kolay kullanım
 
-## Gereksinimler
+## 🛠️ Teknik Gereksinimler
 
-- Python 3.9 veya üzeri
-- pandas
-- smtplib (Python ile birlikte gelir)
-- email.mime (Python ile birlikte gelir)
-
-## Kurulum
-
-1. Python 3.9 veya üzeri sürümü yükleyin
-2. Gerekli paketleri yükleyin:
-   ```
-   pip install pandas
-   ```
-
-## Kullanım
-
-1. `alistesi.csv` dosyasını hazırlayın (örnek format aşağıda)
-2. `mulakat_sorulari.docx` dosyasını proje dizinine ekleyin
-3. `mail_gonder.py` scriptini çalıştırın:
-   ```
-   python mail_gonder.py
-   ```
-4. İstendiğinde SMTP bilgilerini girin
-
-## CSV Dosya Formatı
-
-CSV dosyası aşağıdaki formatta olmalıdır:
 ```
-email
-ornek@email.com
+Python 3.9+
+Flask 2.0+
+pandas 1.3+
+python-docx 0.8+
+flask-sqlalchemy 2.5+
+python-dotenv 0.19+
 ```
 
-## Güvenlik
+## 🔧 Kurulum
 
-- SMTP şifresi olarak uygulama şifresi kullanılmalıdır
-- Gmail için: Google Hesap > Güvenlik > 2 Adımlı Doğrulama > Uygulama Şifreleri
-- Outlook için: Microsoft Hesap > Güvenlik > Uygulama Şifreleri
+1. Projeyi klonlayın:
+   ```bash
+   git clone [repo-url]
+   cd mail_projesi
+   ```
 
-## Log Dosyası
+2. Sanal ortam oluşturun ve aktifleştirin:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+   ```
 
-Tüm işlemler `log.txt` dosyasına kaydedilir:
-- Başarılı gönderimler
-- Hatalar
-- SMTP bağlantı sorunları
-- Dosya işlem hataları
+3. Gereksinimleri yükleyin:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Notlar
+4. `.env` dosyasını oluşturun:
+   ```
+   SECRET_KEY=your-secret-key
+   DATABASE_URL=sqlite:///mail_system.db
+   SMTP_SERVER=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USERNAME=your-email@gmail.com
+   SMTP_PASSWORD=your-app-password
+   ```
 
-- Her e-posta gönderimi arasında 2 saniye bekleme süresi vardır
-- Spam filtrelerine takılmamak için dikkatli kullanılmalıdır
-- Büyük e-posta listeleri için uzun süre gerekebilir 
+## 🚦 Çalıştırma
+
+1. Uygulamayı başlatın:
+   ```bash
+   python app.py
+   ```
+
+2. Tarayıcınızda `http://localhost:5000` adresine gidin
+
+## 📋 CSV Dosya Formatı
+
+CSV dosyanız aşağıdaki formatta olmalıdır:
+
+```csv
+email,name,company
+user@example.com,John Doe,ACME Inc.
+jane@example.com,Jane Smith,XYZ Corp
+```
+
+## 🔐 Güvenlik Notları
+
+- Gmail için "Uygulama Şifresi" kullanın:
+  1. Google Hesabınıza gidin
+  2. Güvenlik > 2 Adımlı Doğrulama'yı açın
+  3. Uygulama Şifreleri > Yeni şifre oluştur
+
+- Outlook için:
+  1. Microsoft hesap ayarlarına gidin
+  2. Güvenlik > Uygulama şifreleri
+  3. Yeni bir uygulama şifresi oluşturun
+
+## 📊 Veritabanı Yapısı
+
+- `EmailHistory`: Gönderim geçmişi
+- `Settings`: SMTP ve e-posta ayarları
+
+## 🔍 Hata Ayıklama
+
+Uygulama logları `instance/mail_system.log` dosyasında tutulur. Hata durumunda bu dosyayı kontrol edin.
+
+## 🤝 Katkıda Bulunma
+
+1. Fork edin
+2. Feature branch oluşturun
+3. Değişikliklerinizi commit edin
+4. Branch'inizi push edin
+5. Pull Request oluşturun
+
+## 📝 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
+
+## 📞 İletişim
+
+Sorularınız için issue açabilir veya e-posta gönderebilirsiniz. 
