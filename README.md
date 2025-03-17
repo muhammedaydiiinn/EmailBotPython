@@ -28,8 +28,8 @@ python-dotenv 0.19+
 
 1. Projeyi klonlayın:
    ```bash
-   git clone [repo-url]
-   cd mail_projesi
+   git clone https://github.com/muhammedaydiiinn/EmailBotPython.git
+   cd EmailBotPython
    ```
 
 2. Sanal ortam oluşturun ve aktifleştirin:
@@ -61,16 +61,16 @@ python-dotenv 0.19+
    python app.py
    ```
 
-2. Tarayıcınızda `http://localhost:5000` adresine gidin
+2. Tarayıcınızda `http://localhost:3000` adresine gidin
 
 ## 📋 CSV Dosya Formatı
 
 CSV dosyanız aşağıdaki formatta olmalıdır:
 
 ```csv
-email,name,company
-user@example.com,John Doe,ACME Inc.
-jane@example.com,Jane Smith,XYZ Corp
+email
+user@example.com
+jane@example.com
 ```
 
 ## 🔐 Güvenlik Notları
@@ -90,10 +90,6 @@ jane@example.com,Jane Smith,XYZ Corp
 - `EmailHistory`: Gönderim geçmişi
 - `Settings`: SMTP ve e-posta ayarları
 
-## 🔍 Hata Ayıklama
-
-Uygulama logları `instance/mail_system.log` dosyasında tutulur. Hata durumunda bu dosyayı kontrol edin.
-
 ## 🤝 Katkıda Bulunma
 
 1. Fork edin
@@ -101,11 +97,3 @@ Uygulama logları `instance/mail_system.log` dosyasında tutulur. Hata durumunda
 3. Değişikliklerinizi commit edin
 4. Branch'inizi push edin
 5. Pull Request oluşturun
-
-## 📝 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır.
-
-## 📞 İletişim
-
-Sorularınız için issue açabilir veya e-posta gönderebilirsiniz. 
